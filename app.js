@@ -1,18 +1,20 @@
+const { request } = require('express');
 const express = require('express');
 const app = express();
 const PORT = 3000;
 const path = require('path');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 // Data for EJS files
 let userName = 'CodeSquader';
 let date = new Date();
 let year = date.getFullYear();
+
 // Array containing 3 objects, each object representing information about a specific product. This is a representation of information that would actually be stored in a database. Since we're not to databases yet, we'll use this array instead. 
 let inventory = [
     {
@@ -58,11 +60,11 @@ app.get('/about', (request, response) => {
     });
 });
 
-app.get('/:name', (request, response) => {
+app.get('/:nameParam', (request, response) => {
     let parameters = request.params;
     console.log (request.params);
-    let name = parameters.name;
-    response.send(`It worked ${name}. Imagine how this route could lead to the profile of ${name}, which is what was typed into the URL in place of :name. Routes with parameters are awesome.`)
+    let name = parameters.nameParam;
+    response.send(`It worked ${name}. Imagine how this route could lead to the profile of ${name}, which is what was typed into the URL in place of :nameParam. Routes with parameters are awesome.`)
 })
 
 app.get('/product/:_id', (request, response) => {
@@ -90,7 +92,6 @@ app.get('/product/:_id', (request, response) => {
         response.send(`This product doesn't exist. Try searching again. `);        
     };
 });
-
 
 
 // Server
